@@ -2,7 +2,7 @@
 class ContaBancariaDAO:
     def __init__(self,conn):
         self.conn = conn
-        self.cursor = self.conn.cursor()
+        self.cursor = self.conn.cursor
     def salvar_conta(self,conta):
         self.cursor.execute('''INSERT INTO contas 
                     (numero_conta, titular, saldo, limite) VALUES
