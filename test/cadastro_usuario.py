@@ -1,0 +1,109 @@
+
+from datetime import datetime
+
+class CadastroUsuario:
+    def __init__(self, nome: str = "None", cpf: str = "None", nascimento: str = "None",
+                 endereco: str = "None", telefone: str = "None", senha: str = "None"):
+        self.nome = nome
+        self.cpf = cpf
+        self.nascimento = nascimento
+        self.endereco = endereco
+        self.telefone = telefone
+        self.senha = senha
+
+    def mostrar_info(self):
+        if self.validar_gravacao():
+            print("\nDados do usuário:")
+            info = f'Nome: {self.nome}\nCPF: {self.cpf}\nData de Nascimento: {self.nascimento}\nTelefone: {self.telefone}\nEndereço: {self.endereco}\n'
+            print(info)
+            print("\n")
+            return info
+        else:
+            print("Não foi possível mostrar as informações. Dado(s) inválido(s)")
+            return False
+
+    def gravar_info(self):
+        if self.validar_gravacao():
+            nome_arquivo = f"cadastro_{self.cpf}.txt"
+            try:
+                with open(nome_arquivo, "w") as arquivo:
+                    arquivo.write(f'Nome: {self.nome}\nCPF: {self.cpf}\nData de Nascimento: {self.nascimento}\n')
+                    arquivo.write(f'Telefone: {self.telefone}\nEndereço: {self.endereco}')
+                    print("Gravação concluída!")
+                    print("\n")
+                    return True
+            except Exception as e:
+                print("Erro na gravação das informações:", e)
+                return False
+        else:
+            print("Não foi possível realizar a gravação das informações")
+            print("\n")
+            return False
+
+    def validar_gravacao(self):
+        return all([
+            self.validar_nome(),
+            self.validar_cpf(),
+            self.validar_nascimento(),
+            self.validar_endereco(),
+            self.validar_telefone(),
+            self.validar_senha()
+        ])
+
+    def validar_nome(self):
+        if " " in self.nome:
+            print("Nome válido!")
+            return True
+        print("Nome inválido!")
+        return False
+
+    def validar_cpf(self):
+        if len(self.cpf) == 14 and self.cpf[3] == "." and self.cpf[7] == "." and self.cpf[11] == "-":
+            print("Formato de CPF válido!")
+            return True
+        print("Formato de CPF inválido!")
+        return False
+
+    def validar_nascimento(self):
+        if self.nascimento[2]=="/" and self.nascimento[5]=="/" and len(self.nascimento)==10:
+            dia, mes, ano = map(int, self.nascimento.split("/"))
+            data_nascimento = datetime(ano, mes, dia)
+            if data_nascimento <= datetime.now():
+                print("Data de nascimento válida!")
+                return True
+            else:
+                print("Data de nascimento inválida!")
+                return False
+        print("Formato de data inválido!")
+        return False
+
+    def validar_endereco(self):
+        if self.endereco != "None":
+            print("Endereço válido!")
+            return True
+        print("Endereço inválido!")
+        return False
+
+    def validar_telefone(self):
+        if (self.telefone[0] == "(" and self.telefone[3] == ")" and
+            (self.telefone[8] == "-" or self.telefone[9] == "-") and
+            len(self.telefone) in [13, 14]):
+            print("Formato de Telefone válido!")
+            return True
+        print("Formato de Telefone inválido!")
+        return False
+
+    def validar_senha(self):
+        if len(self.senha) == 8:
+            print("Senha válida!")
+            return True
+        print("Senha inválida!")
+        return False
+
+
+usuario1 = CadastroUsuario("Maria José", "234.234.456-99", "14/10/2024", "Criseida", "(55)8765-9876", "12345678")
+usuario1.mostrar_info()
+usuario1.gravar_info()
+
+usuario2 = CadastroUsuario()
+usuario2.mostrar_info()
