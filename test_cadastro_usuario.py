@@ -15,7 +15,7 @@ import os
 def usuario_valido():
     # Criação de um objeto para testes
     return CadastroUsuario("Maria José", "234.234.456-99", "22/07/2004", "Criseida", "(55)8765-9876", "12345678")
-
+    
 def usuario_invalido():
     return CadastroUsuario("João", "23.234.456-99", "22/07/200", "None", "(5)8765-9876", "1234568")
 
@@ -29,12 +29,12 @@ def test_instanciacao(usuario_valido):
     assert usuario_valido.senha == "12345678"
 
 def test_validar_nome(usuario_valido,usuario_invalido):
-    # Verifica se o nome fornecido é válido
+    # Verifica se o nome fornecido é válido 
     assert usuario_valido.validar_nome() == True
     assert usuario_invalido.validar_nome() == False
 
 def test_validar_cpf(usuario_valido,usuario_invalido):
-    # Verifica se o CPF fornecido é válido
+    # Verifica se o CPF fornecido é válido 
     assert usuario_valido.validar_cpf() == True
     assert usuario_invalido.validar_cpf() == False
 
@@ -44,7 +44,7 @@ def test_validar_nascimento(usuario_valido,usuario_invalido):
     assert usuario_invalido.validar_nascimento() == False
 
 def test_validar_telefone(usuario_valido,usuario_invalido):
-    # Verifica se o telefone fornecido é válido
+    # Verifica se o telefone fornecido é válido 
     assert usuario_valido.validar_telefone() == True
     assert usuario_invalido.validar_telefone() == False
 
@@ -53,12 +53,12 @@ def test_validar_senha(usuario_valido,usuario_invalido):
     assert usuario_valido.validar_senha() == True
     assert usuario_invalido.validar_senha() == False
 
-def test_mostrar_info(usuario_valido,usuario_invalido):
+def test_mostrar_info(usuario_valido,usuario_invalido): 
     # Verifica se os dados fornecidos são válidos
     assert usuario_valido.mostrar_info() == f'Nome: {usuario_valido.nome}\nCPF: {usuario_valido.cpf}\nData de Nascimento: {usuario_valido.nascimento}\nTelefone: {usuario_valido.telefone}\nEndereço: {usuario_valido.endereco}\n'
     assert usuario_invalido.mostrar_info() == False
 
-'''@pytest.fixture
+@pytest.fixture
 def setup_teardown_arquivo(usuario):
     nome_arquivo = f"cadastro_{usuario.cpf}.txt"
     if os.path.exists(nome_arquivo):
@@ -67,9 +67,26 @@ def setup_teardown_arquivo(usuario):
     if os.path.exists(nome_arquivo):
         os.remove(nome_arquivo)
 
-def test_gravar_info(usuario):
-    # Verifica se a gravaçaõ foi feita
-    assert usuario.gravar_info() == f'Nome: {usuario.nome}\nCPF: {usuario.cpf}\nData de Nascimento: {usuario.nascimento}\nTelefone: {usuario.telefone}\nEndereço: {usuario.endereco}\n''''
+def test_gravar_info_sucesso(usuario_valido, setup_teardown_arquivo):
+    # Teste para verificar se a gravação ocorre corretamente
+    assert usuario_valido.gravar_info() == True
+    # Verifica se o arquivo foi criado
+    nome_arquivo = f"cadastro_{usuario_valido.cpf}.txt"
+    assert os.path.exists(nome_arquivo) == True
+    
+    # Verifica se o conteúdo do arquivo está no formato esperado
+    with open(nome_arquivo, 'r') as arquivo:
+        conteudo = arquivo.read()
+        assert "Nome: Maria José" in conteudo
+        assert "CPF: 234.234.456-99" in conteudo
+        assert "Data de Nascimento: 22/07/2004" in conteudo
+        assert "Telefone: (55)8765-9876" in conteudo
+        assert "Endereço: Criseida" in conteudo
 
-# Esta parte esta incompleta
-
+def test_gravar_info_falha(usuario_invalido):
+    # Teste para verificar o comportamento de falha na validação
+    assert usuario_invalido.gravar_info() == False
+    
+    # Verifica se o arquivo não foi criado
+    nome_arquivo = f"cadastro_{usuario_invalido.cpf}.txt"
+    assert not os.path.exists(nome_arquivo)
