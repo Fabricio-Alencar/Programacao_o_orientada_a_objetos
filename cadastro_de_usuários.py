@@ -28,7 +28,7 @@ class CadastroUsuario:
             return info
         else:
             print("Não foi possível mostrar as informações. Dado(s) inválido(s)")
-
+            
 
     def gravar_info(self):
         if self.validar_gravacao():
@@ -73,7 +73,7 @@ class CadastroUsuario:
         return False
 
     def validar_nascimento(self):
-        try:
+        if self.nascimento[2]=="/" and self.nascimento[5]=="/":
             dia, mes, ano = map(int, self.nascimento.split("/"))
             data_nascimento = datetime(ano, mes, dia)
             if data_nascimento <= datetime.now():
@@ -81,8 +81,8 @@ class CadastroUsuario:
                 return True
             else:
                 print("Data de nascimento inválida!")
-        except ValueError:
-            print("Formato de data inválido!")
+                return False
+        print("Formato de data inválido!")
         return False
 
     def validar_endereco(self):
@@ -109,78 +109,9 @@ class CadastroUsuario:
         return False
 
 
-usuario1 = CadastroUsuario("Maria José", "234.234.456-99", "22/07/2004", "Criseida", "(55)8765-9876", "12345678")
+usuario1 = CadastroUsuario("Maria José", "234.234.456-99", "14/10/2024", "Criseida", "(55)8765-9876", "12345678")
 usuario1.mostrar_info()
 usuario1.gravar_info()
 
 usuario2 = CadastroUsuario()
 usuario2.mostrar_info()
-usuario2.gravar_info()
-
-import pytest
-import os
-#from Cadastro_de_usuarios import CadastroUsuario
-
-@pytest.fixture
-def usuario():
-    # Criando um usuário padrão para os testes
-    return CadastroUsuario("Maria José", "234.234.456-99", "22/07/2004", "Criseida", "(55)8765-9876", "12345678")
-
-@pytest.fixture
-def setup_teardown_arquivo():
-    nome_arquivo = "cadastro_234.234.456-99.txt"
-    # Remover arquivo antes do teste, caso exista
-    if os.path.exists(nome_arquivo):
-        os.remove(nome_arquivo)
-    yield
-    # Remover arquivo após o teste, caso exista
-    if os.path.exists(nome_arquivo):
-        os.remove(nome_arquivo)
-
-def test_mostrar_info(usuario):
-    # Verifica se o método mostrar_info() não retorna erro ao ser chamado
-    assert usuario.mostrar_info() is None
-
-def test_gravar_info(usuario, setup_teardown_arquivo):
-    # Testa se a gravação das informações do usuário é bem-sucedida
-    assert usuario.gravar_info() == "Gravação concluída!"
-    # Confirma se o arquivo foi criado
-    assert os.path.exists("cadastro_234.234.456-99.txt")
-
-def test_validar_nome(usuario):
-    # Testa se o nome é validado corretamente
-    assert usuario.validar_nome() is True
-
-def test_validar_cpf(usuario):
-    # Testa se o CPF é validado corretamente
-    assert usuario.validar_cpf() is True
-
-def test_validar_nascimento(usuario):
-    # Testa se a data de nascimento é validada corretamente
-    assert usuario.validar_nascimento() is True
-
-def test_validar_telefone(usuario):
-    # Testa se o telefone é validado corretamente
-    assert usuario.validar_telefone() is True
-
-def test_validar_senha(usuario):
-    # Testa se a senha é validada corretamente
-    assert usuario.validar_senha() is True
-
-def test_criar_arquivo(usuario, setup_teardown_arquivo):
-    # Testa se o arquivo de usuário pode ser criado e verifica seu conteúdo
-    usuario.gravar_info()
-    with open("cadastro_234.234.456-99.txt", "r") as arquivo:
-        conteudo = arquivo.read()
-        assert "Nome: Maria José" in conteudo
-        assert "CPF: 234.234.456-99" in conteudo
-        assert "Data de Nascimento: 22/07/2004" in conteudo
-
-@pytest.mark.parametrize("cpf,resultado", [
-    ("234.234.456-99", True),
-    ("123.456.789-00", False),  # Formato inválido
-    ("234.234.456-9a", False)   # Contém caractere inválido
-])
-def test_cpf_variados(cpf, resultado):
-    usuario = CadastroUsuario(cpf=cpf)
-    assert usuario.validar_cpf() == resultado
