@@ -1,0 +1,61 @@
+
+
+CREATE TABLE Paciente (
+    id NUMERIC PRIMARY KEY,
+    id_pessoa_FK NUMERIC
+);
+
+CREATE TABLE Profissional (
+    id NUMERIC PRIMARY KEY,
+    Especialidade VARCHAR,
+    CRM NUMERIC UNIQUE,
+    id_pessoa_FK NUMERIC
+);
+
+CREATE TABLE Pessoa (
+    id NUMERIC PRIMARY KEY,
+    Nome VARCHAR,
+    Email VARCHAR,
+    Senha VARCHAR,
+    Telefone NUMERIC,
+    tipo VARCHAR
+);
+
+CREATE TABLE Consulta (
+    id_Consultas NUMERIC PRIMARY KEY,
+    id_Paciente_FK NUMERIC,
+    id_Profissional_FK NUMERIC,
+    Data_Hora TIME,
+    status VARCHAR,
+    Obsaervacoes VARCHAR
+);
+
+CREATE TABLE Prontuario (
+    id NUMERIC PRIMARY KEY,
+    anotacoes_medicas VARCHAR,
+    prescricoes VARCHAR,
+    data NUMERIC,
+    id_paciente_FK NUMERIC,
+    id_profissional_FK NUMERIC,
+    id_consulta_FK NUMERIC
+);
+ 
+ALTER TABLE Paciente ADD CONSTRAINT FK_Paciente_2
+    FOREIGN KEY (id_pessoa_FK???)
+    REFERENCES ??? (???);
+ 
+ALTER TABLE Profissional ADD CONSTRAINT FK_Profissional_2
+    FOREIGN KEY (id_pessoa_FK???)
+    REFERENCES ??? (???);
+ 
+ALTER TABLE Consulta ADD CONSTRAINT FK_Consulta_2
+    FOREIGN KEY (id_Paciente_FK???, id_Profissional_FK???)
+    REFERENCES ??? (???);
+ 
+ALTER TABLE Consulta ADD CONSTRAINT FK_Consulta_3
+    FOREIGN KEY (fk_Profissional_CRM)
+    REFERENCES Profissional (CRM);
+ 
+ALTER TABLE Prontuario ADD CONSTRAINT FK_Prontuario_2
+    FOREIGN KEY (id_consulta_FK???, id_profissional_FK???, id_paciente_FK???)
+    REFERENCES ??? (???);
