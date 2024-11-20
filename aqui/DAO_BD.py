@@ -1,7 +1,7 @@
 import sqlite3
 from abc import ABC, abstractmethod
 
-#Classe base para os DAOs
+# Classe base para os DAOs
 class BaseDAO(ABC):
     def __init__(self, conn):
         self.conn = conn
@@ -11,43 +11,40 @@ class BaseDAO(ABC):
     def tabela(self):
         pass
 
-#Classe genérica para operações CRUD
+# Classe genérica para operações CRUD
 class GenericDAO(BaseDAO):
-    def cadastrar(self, **kwargs): #Usei um kwargs(dicionario) para o total de atributos de cada tabela se "ajustar" ao total de dados inseridos
+    def cadastrar(self, **kwargs):
         try:
-            colunas = ', '.join(kwargs.keys())  # Cria uma string contendo as chaves separadas por vírgulas, ex.: "nome, tipo, especialidade"
-            valores = ', '.join(['?' for _ in kwargs.values()])  # Cria uma string com o mesmo número de "?" que o número de atributos, separando-os por vírgulas, ex.: "?, ?, ?"
-            mensagem = f"INSERT INTO {self.tabela()} ({colunas}) VALUES ({valores})"  # Monta a mensagem de inserção
-            self.cursor.execute(mensagem, tuple(kwargs.values()))  # Executa a inserção. tuple --> pega os valores e coloca em uma ""lista"""
-            self.conn.commit()  # Confirma a inserção
+            colunas = ', '.join(kwargs.keys())
+            valores = ', '.join(['?' for _ in kwargs.values()])
+            mensagem = f"INSERT INTO {self.tabela()} ({colunas}) VALUES ({valores})"
+            self.cursor.execute(mensagem, tuple(kwargs.values()))
+            self.conn.commit()
             print(f"Registro cadastrado com sucesso na tabela {self.tabela()}!")
-            return True
         except sqlite3.Error as e:
+            self.conn.rollback()
             print(f"Erro ao cadastrar na tabela {self.tabela()}: {e}")
             return False
 
-    def excluir(self, identificador, valor): #Manda o indentificador (id,crm..), e o valor deste identificador (1(id), 24563434(crm), ...)
+    def excluir(self, identificador, valor):
         try:
-            mensagem = f"DELETE FROM {self.tabela()} WHERE {identificador} = ?" #Monta a mensagem de exclusão
-            self.cursor.execute(mensagem, (valor,)) #Executa a exclusão
-            if self.cursor.rowcount == 0: #Nenhuma modificção foi feita
+            mensagem = f"DELETE FROM {self.tabela()} WHERE {identificador} = ?"
+            self.cursor.execute(mensagem, (valor,))
+            if self.cursor.rowcount == 0:
                 print(f"Nenhum registro encontrado com {identificador} = {valor}.")
                 return False
             else:
-                self.conn.commit() # Confirma a exclusão
+                self.conn.commit()
                 print(f"Registro excluído com sucesso da tabela {self.tabela()}!")
                 return True
         except sqlite3.Error as e:
+            self.conn.rollback()
             print(f"Erro ao excluir da tabela {self.tabela()}: {e}")
             return False
 
     def atualizar_atributo(self, identificador, id_valor, atributo, novo_valor):
-          # identificador = nome da coluna que será utilizada para localizar o registro (ex: 'id'); ---Usuario
-          # id_valor = valor que identifica o registro a ser atualizado (ex: '123'); ---Usuario
-          # atributo = nome da coluna que será atualizada (ex: 'nome'); ----Atributo
-          # novo_valor = novo valor a ser atribuído ao atributo (ex: 'João').  ----Atributo
         try:
-            mensagem = f"UPDATE {self.tabela()} SET {atributo} = ? WHERE {identificador} = ?" # Monta uma mensagem de atualização
+            mensagem = f"UPDATE {self.tabela()} SET {atributo} = ? WHERE {identificador} = ?"
             self.cursor.execute(mensagem, (novo_valor, id_valor))
             if self.cursor.rowcount == 0:
                 print(f"Nenhum registro encontrado com {identificador} = {id_valor}.")
@@ -60,7 +57,7 @@ class GenericDAO(BaseDAO):
             print(f"Erro ao atualizar na tabela {self.tabela()}: {e}")
             return False
 
-    def visualizar(self, **filtros):  #Arrumar o vizualizar
+    def visualizar(self, **filtros):
         try:
             if filtros:
                 condicoes = ' AND '.join([f"{coluna} = ?" for coluna in filtros.keys()])
@@ -69,21 +66,24 @@ class GenericDAO(BaseDAO):
             else:
                 query = f"SELECT * FROM {self.tabela()}"
                 self.cursor.execute(query)
+
             registros = self.cursor.fetchall()
-            return registros
-        except sqlite3.Error as e:
-            print(f"Erro ao visualizar registros na tabela {self.tabela()}: {e}")
+            colunas = [coluna[0] for coluna in self.cursor.description]
+
+            dicionarios_registros = [
+                {coluna: valor for coluna, valor in zip(colunas, registro)}
+                for registro in registros
+            ]
+
+            return dicionarios_registros
+        except Exception as e:
+            print(f"Erro ao visualizar: {e}")
             return []
 
 # Classes específicas para cada entidade
-# Todas as classes podem utilizar os métodos sa classe GenericDAO (métodos CRUD)
-class PacienteDAO(GenericDAO):
+class UsuarioDAO(GenericDAO):
     def tabela(self):
-        return "Paciente"
-
-class ProfissionalDAO(GenericDAO):
-    def tabela(self):
-        return "Profissional"
+        return "Usuario"
 
 class ConsultasDAO(GenericDAO):
     def tabela(self):
@@ -92,3 +92,4 @@ class ConsultasDAO(GenericDAO):
 class ProntuarioDAO(GenericDAO):
     def tabela(self):
         return "Prontuario"
+
