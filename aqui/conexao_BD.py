@@ -1,11 +1,9 @@
 import sqlite3
 
-#Checar esse valores UNIQUE pq estão dando xabu
-
 class ConexaoBD:
     def __init__(self):
         try:
-            self.conn = sqlite3.connect("banco2.db")
+            self.conn = sqlite3.connect("banco.db", timeout=10)
             self.cursor = self.conn.cursor()
             print("Conexão estabelecida com sucesso!")
         except sqlite3.Error as e:
@@ -14,31 +12,20 @@ class ConexaoBD:
     def criar_tabela(self):
         if self.conn:
             try:
-                # Criar tabela Paciente
+                # Criar tabela Usuario
                 self.cursor.execute('''
-                CREATE TABLE IF NOT EXISTS Paciente (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    nome TEXT NOT NULL,
-                    email TEXT UNIQUE NOT NULL,
-                    senha TEXT UNIQUE NOT NULL,
-                    telefone TEXT NOT NULL,
-                    tipo_usuario TEXT NOT NULL
-                )''')
-
-                # Criar tabela Profissional
-                self.cursor.execute('''
-                CREATE TABLE IF NOT EXISTS Profissional (
+                CREATE TABLE IF NOT EXISTS Usuario (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nome TEXT NOT NULL,
                     email TEXT UNIQUE NOT NULL,
                     senha TEXT UNIQUE NOT NULL,
                     telefone TEXT NOT NULL,
                     tipo_usuario TEXT NOT NULL,
-                    especialidade TEXT NOT NULL,
-                    crm TEXT UNIQUE NOT NULL
+                    especialidade TEXT,
+                    crm TEXT UNIQUE
                 )''')
 
-                #Cria tabela Consultas
+                # Cria tabela Consultas
                 self.cursor.execute('''
                 CREATE TABLE IF NOT EXISTS Consultas (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,11 +35,11 @@ class ConexaoBD:
                     observacoes TEXT,
                     id_paciente_FK INTEGER,
                     id_profissional_FK INTEGER,
-                    FOREIGN KEY (id_profissional_FK) REFERENCES Profissional(id),
-                    FOREIGN KEY (id_paciente_FK) REFERENCES Paciente(id)
+                    FOREIGN KEY (id_profissional_FK) REFERENCES Usuario(id),
+                    FOREIGN KEY (id_paciente_FK) REFERENCES Usuario(id)
                 )''')
 
-                #Cria tabela Prontuario
+                # Cria tabela Prontuario
                 self.cursor.execute('''
                 CREATE TABLE IF NOT EXISTS Prontuario (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,11 +49,10 @@ class ConexaoBD:
                     id_paciente_FK INTEGER,
                     id_profissional_FK INTEGER,
                     id_consulta_FK INTEGER,
-                    FOREIGN KEY (id_profissional_FK) REFERENCES Profissional(id),
+                    FOREIGN KEY (id_profissional_FK) REFERENCES Usuario(id),
                     FOREIGN KEY (id_consulta_FK) REFERENCES Consultas(id),
-                    FOREIGN KEY (id_paciente_FK) REFERENCES Paciente(id)
+                    FOREIGN KEY (id_paciente_FK) REFERENCES Usuario(id)
                 )''')
-
 
                 self.conn.commit()
                 print("Tabelas criadas com sucesso!")
@@ -74,7 +60,7 @@ class ConexaoBD:
                 print("Erro ao criar tabelas!", e)
         else:
             print("Não há conexão com o Banco de Dados.")
-
+            
     def fechar_conexao(self):
         if self.conn:
             try:
