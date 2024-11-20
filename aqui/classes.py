@@ -1,15 +1,28 @@
-from verificacoes import Validacoes 
-import bcrypt 
+#from verificacoes import Validacoes 
+#import bcrypt 
 import re
 from cryptography.fernet import Fernet  # Importa Fernet para criptografia
 
-class Pessoa():
-    def __init__(self, nome: str, email: str, senha: str, telefone: str, tipo_usuario: str):
+class Usuario():
+    def __init__(self, nome: str, email: str, senha: str, telefone: str, tipo_usuario: str, especialidade:str=None, crm:str=None):
         self.nome = nome
         self.email = email
-        self.__senha = senha
+        self.senha = senha
         self.telefone = telefone
         self.tipo_usuario = tipo_usuario 
+        self.especialidade = especialidade
+        self.crm = crm
+      
+    def to_dict(self):
+        return {
+            'nome': self.nome,
+            'email': self.email,
+            'senha': self.senha,
+            'tipo_usuario': self.tipo_usuario,
+            'telefone': self.telefone,
+            'especialidade': self.especialidade,
+            'crm': self.crm
+        }
 
     def validar_senha(self):  # Corrigido a referência do método
         if len(self.__senha) < 8:
@@ -44,59 +57,20 @@ class Pessoa():
             return True  # Indica sucesso
         return False  # Indica falha
 
-class Paciente(Pessoa):
-    def __init__(self, nome: str, email: str, senha: str, telefone: str, tipo_usuario: str):
-        super().__init__(nome, email, senha, telefone, tipo_usuario)  # Inicializa corretamente a classe pai
-
-    def to_dict(self):
-        return {
-            'nome': self.nome,
-            'email': self.email,
-            'tipo_usuario': self.tipo_usuario,
-            'telefone': self.telefone
-        }
-
-    def Cadastrar_Paciente(self):
+    def Cadastrar_Usuario(self):
         pass 
 
-def Visualizar_Paciente(self):
-    pass
+def Visualizar_Usuario(usuario_dao, **filtros):
+  return usuario_dao.visualizar(**filtros)
 
-def Alterar_Paciente(self):
-    pass
-
-def Excluir_Paciente(self):
-    pass
-
-class Profissional(Pessoa):
-    def __init__(self, nome: str, email: str, senha: str, telefone: str, tipo_usuario: str, crm: str, especialidade: str):
-        super().__init__(nome, email, senha, telefone, tipo_usuario)  # Inicializa corretamente a classe pai
-        self.crm = crm  # Assume que crm é passado corretamente
-        self.especialidade = especialidade
-
-    def to_dict(self):
-        return {
-            'nome': self.nome,
-            'email': self.email,
-            'tipo_usuario': self.tipo_usuario,
-            'telefone': self.telefone,
-            'especialidade': self.especialidade,
-            'crm': self.crm
-        }
-    def Cadastrar_Profissional(self):
-        pass 
-
-def Visualizar_Profissional(self):
+def Alterar_Usuario(self):
         pass
 
-def Alterar_Profissional(self):
-        pass
-
-def Excluir_Profissional(self):
+def Excluir_Usuario(self):
         pass
 
 class Consulta:
-    def __init__(self, paciente: Paciente, profissional: Profissional, data: str, hora: str, observacoes=None):
+    def __init__(self, paciente:Usuario, profissional:Usuario, data: str, hora: str, observacoes=None):
         self.paciente = paciente
         self.profissional = profissional  # Corrigido para usar a variável correta
         self.data = data
@@ -107,19 +81,30 @@ class Consulta:
     def Agendar_Consulta(self):
         pass
 
-    def Visualizar_Consulta(self):
+def Visualizar_Consulta(self):
         pass
 
-    def Alterar_Consulta(self):
-        pass
+def Alterar_Consulta(self):
+    pass
 
-    def Cancelar_Consulta(self):
-        pass
+def Cancelar_Consulta(self):
+    pass
 
 class Prontuario:
-    def __init__(self, paciente: Paciente, profissional: Profissional, data: str, anotacoes_medicas: str, prescricoes: str):
+    def __init__(self, paciente: Usuario, profissional: Usuario, data: str, anotacoes_medicas: str, prescricoes: str):
         self.paciente = paciente
         self.profissional = profissional  # Corrigido para usar a variável correta
         self.data = data
         self.anotacoes_medicas = anotacoes_medicas
         self.prescricoes = prescricoes
+    def Criar_Prontuario(self):
+        pass
+
+def Visualizar_Prontuario(self):
+        pass
+
+def Alterar_Prontuario(self):
+    pass
+
+def Excluir_Prontuario(self):
+    pass
