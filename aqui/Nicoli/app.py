@@ -133,8 +133,9 @@ def login():
             session['usuario_nome'] = usuario.nome
             session['tipo_usuario'] = usuario.tipo_usuario
             if usuario.tipo_usuario == 'paciente':
-                return render_template('paciente_dashboard.html', usuario_nome=session['usuario_nome'])
+                return render_template('paciente_dashboard.html', usuario_nome=session['usuario_nome'],usuario_id=session['usuario_id'])
             else:
+                flash('Credenciais inválidas')
                 return redirect(url_for('profissional_dashboard'))
         else:
             return render_template('login.html', mensagem='Credenciais inválidas')
@@ -214,7 +215,7 @@ def logout():
 @app.route('/paciente_dashboard')
 def paciente_dashboard():
     if 'usuario_id' in session and session['tipo_usuario'] == 'paciente':
-        return render_template('paciente_dashboard.html', usuario_nome=session['usuario_nome'])
+        return render_template('paciente_dashboard.html', usuario_nome=session['usuario_nome'], usuario_id=session['usuario_id'])
     else:
         return redirect(url_for('login'))
 
