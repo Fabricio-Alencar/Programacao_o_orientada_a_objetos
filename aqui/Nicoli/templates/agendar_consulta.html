@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Consulta</title>
+    <link rel="stylesheet" href="../static/agendar_consulta.css">
+</head>
+<body>
+    <div class="page">
+        <form method="POST" class="formAgendarConsulta" action="/agendar_consulta" aria-label="Formulário de Agendamento">
+            <h1>Agendar Consulta</h1>
+            <p>Preencha os detalhes abaixo para agendar sua consulta.</p>
+
+            <label for="profissional">Profissional de Saúde:</label>
+            <select id="profissional" name="profissional_id" required>
+                <option value="" disabled selected>Selecione um profissional</option>
+                {% for profissional in profissionais %}
+                <option value="{{ profissional.id }}">{{ profissional.nome }} - {{ profissional.especialidade }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="data_hora">Data e Hora:</label>
+            <input type="datetime-local" id="data_hora" name="data_hora" required>
+
+            <input type="submit" value="Agendar" class="btn">
+        </form>
+    </div>
+</body>
+</html>

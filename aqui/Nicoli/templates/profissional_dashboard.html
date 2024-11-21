@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Profissional de Saúde</title>
+    <link rel="stylesheet" href="../static/profissional_dashboard.css">
+    <script>
+        async function obterInformacoesProfissional(id) {
+            try {
+                const response = await fetch(`/profissional/${id}`);
+                if (!response.ok) {
+                    throw new Error('Profissional não encontrado');
+                }
+                const dados = await response.json();
+                document.getElementById('profissional-info').innerHTML = 
+                    `<p>ID: ${dados.id}</p>
+                    <p>Nome: ${dados.nome}</p>
+                    <p>E-Mail: ${dados.email}</p>
+                    <p>Especialidade: ${dados.especialidade}</p>`;
+            } catch (error) {
+                document.getElementById('profissional-info').innerHTML = 
+                    `<p>${error.message}</p>`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const botao = document.getElementById('get_profissional_info');
+            botao.addEventListener('click', function() {
+                obterInformacoesProfissional(1);
+            });
+
+            const botaoLimpar = document.getElementById('limpar_dados');
+            botaoLimpar.addEventListener('click', function() {
+                limpar_dados();
+            });
+        });
+
+        function limpar_dados() {
+            const divProfissionalInfo = document.getElementById('profissional-info');
+            divProfissionalInfo.textContent = ''; // Limpa o conteúdo da div
+        }
+    </script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Bem-vindo, Dr(a). {{ usuario_nome }}</h1>
+            <nav>
+                <a href="/consultas">Consultas Agendadas</a>
+                <a href="/prontuarios">Prontuários</a>
+                <a class="sair" href="/logout">Sair</a>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="formLogin">
+                <h2>Informações do Profissional</h2>
+                <div class="button-container">
+                    <button class="btn" id="get_profissional_info">Dados do Profissional</button>
+                    <button class="btn" id="limpar_dados">Limpar Dados</button>
+                </div>
+                <div id="profissional-info">
+                    <!-- Informações do profissional serão exibidas aqui -->
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

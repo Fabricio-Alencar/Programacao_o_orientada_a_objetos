@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Profissional</title>
+    <link rel="stylesheet" href="../static/cadastrar.css">
+    <script>
+        function validarEntrada(event) {
+            const tecla = event.key;
+            if (!/^\d$/.test(tecla) && tecla !== 'Backspace' && tecla !== 'Delete') {
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="page">
+        <form method="POST" class="formRegister" action="/cadastrar_profissional" aria-label="Formulário de Cadastro de Profissional">
+            <h1>Cadastrar Profissional</h1>
+            <p>Preencha os dados abaixo para cadastrar um novo profissional.</p>
+
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite o nome" required>
+
+            <label for="sobrenome">Sobrenome</label>
+            <input type="text" id="sobrenome" name="sobrenome" placeholder="Digite o sobrenome" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Digite o email" required>
+
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Digite a senha" required>
+
+            <label for="telefone">Telefone</label>
+            <input type="text" id="telefone" name="telefone" placeholder="Digite o telefone" 
+                   minlength="10" maxlength="15" required onkeypress="validarEntrada(event)">
+
+            <label for="especialidade">Especialidade</label>
+            <input type="text" id="especialidade" name="especialidade" placeholder="Digite a especialidade" required>
+
+            <label for="crm">CRM</label>
+            <input type="text" id="crm" name="crm" placeholder="Digite o CRM" required>
+
+            <input type="submit" value="Cadastrar" class="btn">
+        </form>
+    </div>
+</body>
+</html>
