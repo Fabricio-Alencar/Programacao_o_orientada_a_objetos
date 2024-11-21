@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Paciente</title>
+    <link rel="stylesheet" href="../static/paciente_dashboard.css">
+    <script>
+        async function obterInformacoesPaciente(id) {
+            try {
+                const response = await fetch(`/paciente/${id}`);
+                if (!response.ok) {
+                    throw new Error('Paciente não encontrado');
+                }
+                const dados = await response.json();
+                document.getElementById('paciente-info').innerHTML = `
+                    <p>ID: ${dados.id}</p>
+                    <p>Nome: ${dados.nome}</p>
+                    <p>E-Mail: ${dados.email}</p>
+                    <p>Tipo de Usuário: ${dados.tipo_usuario}</p>
+                `;
+            } catch (error) {
+                document.getElementById('paciente-info').innerHTML = `
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const botao = document.getElementById('get_usuario_info');
+            botao.addEventListener('click', function() {
+                obterInformacoesPaciente(1);
+            });
+
+            const botaoLimpar = document.getElementById('limpar_dados');
+            botaoLimpar.addEventListener('click', function() {
+                limpar_dados();
+            });
+        });
+
+        function limpar_dados() {
+            const divPacienteInfo = document.getElementById('paciente-info');
+            divPacienteInfo.textContent = ''; // Limpa o conteúdo da div
+        }
+    </script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Bem-vindo, {{ usuario_nome }}</h1>
+            <nav>
+                <a href="/agendar_consulta">Agendar Consulta</a>
+                <a href="/consultas">Minhas Consultas</a>
+                <a class="sair" href="/logout">Sair</a>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="formLogin">
+                <h2>Informações do Paciente</h2>
+                <div class="button-container">
+                    <button class="btn" id="get_usuario_info">Dados do Usuário</button>
+                    <button class="btn" id="limpar_dados">Limpar Dados</button>
+                </div>
+                <div id="paciente-info">
+                    <!-- Informações do paciente serão exibidas aqui -->
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

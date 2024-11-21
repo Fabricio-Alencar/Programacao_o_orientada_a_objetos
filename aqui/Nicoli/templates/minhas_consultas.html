@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Consultas</title>
+    <link rel="stylesheet" href="../static/minhas_cunsultas.css"> <!-- Corrigido o caminho -->
+</head>
+<body>
+    <div class="page">
+        <form method="POST" class="formMinhasConsultas" action="/minhas_consultas" aria-label="Formulário de Minhas Consultas">
+            <h1>Consultas Agendadas</h1>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Profissional Responsável</th>
+                    </tr>
+                </thead>
+                <tbody id="consultas-agendadas">
+                    <!-- As informações das consultas serão inseridas aqui -->
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+</body>
+</html>
