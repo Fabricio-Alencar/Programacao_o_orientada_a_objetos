@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prontuários Médicos</title>
+    <link rel="stylesheet" href="../static/prontuarios.css">
+    <script>
+        async function obterProntuarios() {
+            try {
+                const response = await fetch('/prontuarios');
+                if (!response.ok) {
+                    throw new Error('Nenhum prontuário encontrado');
+                }
+                const prontuarios = await response.json();
+                criarListaProntuarios(prontuarios);
+            } catch (error) {
+                document.querySelector('.lista-prontuarios').innerHTML = `<p>${error.message}</p>`;
+            }
+        }
+
+        function criarListaProntuarios(prontuarios) {
+            const lista = document.querySelector('.lista-prontuarios');
+            lista.innerHTML = ''; // Limpar dados existentes
+
+            prontuarios.forEach(prontuario => {
+                const item = document.createElement('div');
+                item.classList.add('prontuario');
+                item.innerHTML = `
+                    <p><strong>Data:</strong> ${prontuario.data}</p>
+                    <p><strong>Anotações:</strong> ${prontuario.anotacoes}</p>
+                    <p><strong>Prescrição:</strong> ${prontuario.prescricao}</p>
+                    <p><strong>Paciente:</strong> ${prontuario.paciente}</p>
+                    <div class="acoes">
+                        <button onclick="editarProntuario(${prontuario.id})">Editar</button>
+                        <button onclick="removerProntuario(${prontuario.id})">Remover</button>
+                    </div>
+                `;
+                lista.appendChild(item);
+            });
+        }
+
+        async function editarProntuario(id) {
+            const novasAnotacoes = prompt("Digite as novas anotações:");
+            const novaPrescricao = prompt("Digite a nova prescrição:");
+            const novaData = prompt("Digite a nova data (YYYY-MM-DD):");
+
+            if (novasAnotacoes && novaPrescricao && novaData) {
+                try {
+                    const response = await fetch(`/prontuarios/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            data: novaData,
+                            anotacoes: novasAnotacoes,
+                            prescricao: novaPrescricao
+                        })
+                    });
+                    if (!response.ok) throw new Error('Erro ao atualizar o prontuário.');
+                    alert('Prontuário atualizado com sucesso.');
+                    obterProntuarios();
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+        }
+
+        async function removerProntuario(id) {
+            if (confirm('Tem certeza de que deseja remover este prontuário?')) {
+                try {
+                    const response = await fetch(`/prontuarios/${id}`, { method: 'DELETE' });
+                    if (!response.ok) throw new Error('Erro ao remover o prontuário.');
+                    alert('Prontuário removido com sucesso.');
+                    obterProntuarios();
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+        }
+
+        async function obterConsultas() {
+            try {
+                const response = await fetch('/consultas');
+                if (!response.ok) {
+                    throw new Error('Não foi possível carregar as consultas.');
+                }
+                const consultas = await response.json();
+                const dropdown = document.getElementById('consulta');
+                consultas.forEach(consulta => {
+                    const option = document.createElement('option');
+                    option.value = consulta.id;
+                    option.textContent = `Consulta: ${consulta.data} - ${consulta.paciente}`;
+                    dropdown.appendChild(option);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            obterProntuarios();
+            obterConsultas();
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Prontuários Médicos</h1>
+        <nav>
+            <a href="/consultas_agendadas">Consultas Agendadas</a>
+            <a href="/profissional_dashboard">Área do Profissional</a>
+            <a href="/logout" class="sair">Sair</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Gerenciar Prontuários</h2>
+        <div class="conteudo-lateral">
+            <!-- Lista de Prontuários -->
+            <section class="prontuarios-secao">
+                <h3>Prontuários Criados</h3>
+                <div class="lista-prontuarios">
+                    <!-- Prontuários serão carregados aqui -->
+                </div>
+            </section>
+            <!-- Formulário de Criação -->
+            <section class="formulario-secao">
+                <h3>Criar Novo Prontuário</h3>
+                <form id="form-prontuario">
+                    <label for="consulta">Consulta:</label>
+                    <select id="consulta" name="consulta" required>
+                        <option value="" disabled selected>Selecione uma consulta</option>
+                        <!-- Consultas serão carregadas aqui -->
+                    </select>
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data" required>
+                    <label for="anotacoes">Anotações Médicas:</label>
+                    <textarea id="anotacoes" name="anotacoes" required></textarea>
+                    <label for="prescricao">Prescrição:</label>
+                    <textarea id="prescricao" name="prescricao" required></textarea>
+                    <button type="submit">Salvar Prontuário</button>
+                </form>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

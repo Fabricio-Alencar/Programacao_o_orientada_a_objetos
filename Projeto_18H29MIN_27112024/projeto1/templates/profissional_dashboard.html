@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Profissional</title>
+    <link rel="stylesheet" href="../static/profissional_dashboard.css">
+    <script>
+    let isEditing = false; // Flag para verificar se estamos em modo de edição
+
+    async function obterInformacoesProfissional(id) {
+        try {
+            const response = await fetch(`/profissional/${id}`);
+            if (!response.ok) {
+                throw new Error('Profissional não encontrado');
+            }
+            const dados = await response.json();
+            const profissionalInfoDiv = document.getElementById('profissional-info');
+            
+            if (isEditing) {
+                // Exibir os campos editáveis se estiver em modo de edição
+                profissionalInfoDiv.innerHTML = `
+                    <label>ID: <input type="text" id="edit-id" value ="${dados.id}" disabled></label><br>
+                    <label>Nome: <input type="text" id="edit-nome" value="${dados.nome}"></label><br>
+                    <label>E-Mail: <input type="email" id="edit-email" value="${dados.email}"></label><br>
+                    <label>Especialidade: <input type="text" id="edit-especialidade" value="${dados.especialidade}"></label><br>
+                    <div class="telefone-container">
+                        <label>DDD:<input type="text" id="edit-ddd" name="ddd" placeholder="DDD" maxlength="2" value="${dados.telefone.substring(1, 3)}" onkeypress="validarEntrada(event)"></label>
+                        <label>Telefone:<input type="text" id="edit-telefone" name="telefone" placeholder="Digite o telefone" minlength="8" maxlength="10" required value="${dados.telefone.substring(4)}" onkeypress="validarEntrada(event)"></label> 
+                    </div>                    
+                    <button class="btn" id="save-info" onclick="salvarAlteracoes('${dados.id}')">Salvar Alterações</button>
+                `;
+            } else {
+                // Exibir as informações de forma estática
+                profissionalInfoDiv.innerHTML = `
+                    <p>ID: ${dados.id}</p>
+                    <p>Nome: ${dados.nome}</p>
+                    <p>E-Mail: ${dados.email}</p>
+                    <p>Especialidade: ${dados.especialidade}</p>
+                    <p>CRM: ${dados.crm}</p>
+                    <p>Telefone: ${dados.telefone }</p>
+                `;
+            }
+        } catch (error) {
+            document.getElementById('profissional-info').innerHTML = `
+                <p>${error.message}</p>
+            `;
+        }
+    }
+
+    // Função para alternar entre modo de edição e exibição normal
+    function toggleEdit() {
+        isEditing = !isEditing;
+        const usuarioId = '{{ usuario_id }}'; // Aqui, você deve passar o ID do usuário
+        obterInformacoesProfissional(usuarioId);
+    }
+
+    // Função para salvar as alterações feitas
+    async function salvarAlteracoes(id) {
+        const nome = document.getElementById('edit-nome').value;
+        const email = document.getElementById('edit-email').value;
+        const especialidade = document.getElementById('edit-especialidade').value;
+        const ddd = document.getElementById('edit-ddd').value; // Captura o DDD
+        const telefone = document.getElementById('edit-telefone').value; // Captura o telefone
+
+        // Formatar o telefone no formato esperado (+DDD) 9XXXX-XXXX
+        const telefoneCompleto = `+${ddd} ${telefone.replace(/\D/g, '').substring(0, 10)}`;
+
+        try {
+            const response = await fetch(`/atualizar_profissional/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nome: nome,
+                    email: email,
+                    especialidade: especialidade,
+                    telefone: telefoneCompleto // Enviar telefone formatado
+                })
+            });
+
+            if (response.ok) {
+                alert('Informações atualizadas com sucesso!');
+                window.location.href = `/profissional_dashboard?nome=${encodeURIComponent(nome)}&id=${encodeURIComponent(id)}`;
+            } else {
+                alert('Erro ao salvar as alterações. Tente novamente.');
+            }
+        } catch (error) {
+            alert('Erro ao salvar as alterações. Tente novamente.');
+            console.error(error);
+        }
+    }
+
+    async function excluirConta() {
+        if (confirm("Você tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.")) {
+            try {
+                const response = await fetch('/excluir_conta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    window.location.href = `/profissional_dashboard?nome=${encodeURIComponent(nome)}&id=${encodeURIComponent(id)}`;
+                } else {
+                    alert('Ocorreu um erro ao tentar excluir sua conta. Tente novamente.');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir conta:', error);
+                alert('Ocorreu um erro ao tentar excluir sua conta. Tente novamente.');
+            }
+        }
+    }
+
+    function limpar_dados() {
+        const divProfissionalInfo = document.getElementById('profissional-info');
+        divProfissionalInfo.textContent = ''; // Limpa o conteúdo da div
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const botao = document.getElementById('get_usuario_info');
+        const botaoLimpar = document.getElementById('limpar_dados');
+        const botaoExcluir = document.getElementById('excluir_conta');
+        const botaoEditar = document.getElementById('editar_info');
+
+        // Adiciona evento para o botão "Excluir Conta"
+        if (botaoExcluir) {
+            botaoExcluir.addEventListener('click', excluirConta);
+        }
+
+        // Verifica se o botão de obter informações existe antes de adicionar o evento
+        if (botao) {
+            botao.addEventListener('click', function() {
+                obterInformacoesProfissional('{{ usuario_id }}');
+            });
+        }
+
+        // Verifica se o botão de limpar dados existe antes de adicionar o evento
+        if (botaoLimpar) {
+            botaoLimpar.addEventListener('click', function() {
+                limpar_dados();
+            });
+        }
+
+        // Adiciona evento para o botão "Editar Informações"
+        if (botaoEditar) {
+            botaoEditar.addEventListener('click', toggleEdit);
+        }
+    });
+
+    </script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Bem-vindo, {{ usuario_nome }}</h1>
+            <nav>
+                <a href="/prontu ários">Prontuários</a>
+                <a href="/minhas_consultas">Minhas Consultas</a>
+                <a class="sair" id="excluir_conta" href="#">Excluir Conta</a>
+                <a class="sair" href="/logout">Sair</a>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="formLogin">
+                <h2>Informações do Profissional</h2>
+                <div class="button-container">
+                    <button class="btn" id="get_usuario_info">Dados do Usuário</button>
+                    <button class="btn" id="editar_info">Editar Informações</button>
+                    <button class="btn" id="limpar_dados">Limpar Dados</button>
+                </div>
+                <div id="profissional-info">
+                    <!-- Informações do profissional serão exibidas aqui -->
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
