@@ -1,0 +1,65 @@
+class Cliente:
+    def __init__(self, endereco:str):
+        self.endereco = endereco
+        self.contas = None
+    def realizar_transacao(self, conta, transacao):
+        if self.contas == None:
+            print("Você não tem uma conta")
+            return
+        else:
+            pass
+    def adcionar_conta(self,conta):
+        pass
+        
+    
+class PessoaFisica(Cliente):
+    def __init__(self, endereco, contas, cpf:str, nome:str, data_nascimento:str):
+        super().__init__(endereco, contas)
+        self.cpf = cpf
+        self.nome = nome
+        self.data_nascimento = data_nascimento
+                         
+                     
+                         
+class Transacao:
+    def resgistrar(conta: Conta):
+        pass
+    
+class Deposito:
+    def __init__(self, valor:float):
+        self. valor = valor
+        
+class Saque:
+    def __init__(self, valor:float):
+        self. valor = valor
+        
+class Historico:
+    def adcionar_transacao(transacao: Transacao):
+        pass
+             
+             
+             
+class Conta:
+    def __init__(self, saldo:float, numero:int, agencia:str, cliente:Cliente, historico:Historico):
+        self.saldo = saldo
+        self.numero = numero
+        self.agencia = agencia
+        self.cliente = cliente
+        self.historico = historico
+    def saldo(self):
+        pass
+    def nova_conta(self, cliente:Cliente, numero:int):
+        pass
+    def sacar(self, valor: float):
+        pass
+    def despositar(self, valor:float):
+        pass
+    
+    
+    
+class ContaCorrente(Conta):
+    def __init__(self, saldo, numero, agencia, cliente, historico, limite: float, limite_saques: int):
+        super().__init__(saldo, numero, agencia, cliente, historico)
+        self.limite = limite
+        self.limite_saques = limite_saques
+   
