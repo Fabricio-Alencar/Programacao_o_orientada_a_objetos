@@ -1,6 +1,3 @@
-# Programa-o-Orientada-a-Objetos
-
-
 # O que Aprendi em Programação Orientada a Objetos (POO)
 
 ## Conceitos Principais
