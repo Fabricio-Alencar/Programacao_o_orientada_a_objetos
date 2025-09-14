@@ -1,0 +1,29 @@
+/* Logo (imagem do projeto) */
+.logo {
+  width: 400px;
+  height: 110px;
+  margin-top: 60px;
+  right: 30px;  /* distância da lateral direita (ou use left) */
+
+  margin-bottom: 70px;}
+
+/* Imagem do esquilo astronauta */
+.esquilo {
+  position: absolute;
+  top: 0px;    /* distância do topo da tela */
+  right: 20px;  /* distância da lateral direita (ou use left) */
+  width: 120px;
+  height: 120px;
+}
+
+
+/* Foguete rotacionado */
+.foguete {
+  position: absolute;
+  bottom: -110px;               /* Posicionado fora da caixa para dar estilo */
+  left: -130px;
+  width: 330px;
+  transform: rotate(-28.49deg); /* Inclinado */
+}
+
+

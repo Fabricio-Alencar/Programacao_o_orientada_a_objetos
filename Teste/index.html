@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projack Impulse - Cadastro</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap">
+  <link rel="stylesheet" href="https://use.typekit.net/xoh7gtf.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quantico&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css_cadastro/geral.css">
+  <link rel="stylesheet" href="/css_cadastro/lado_direito.css">
+  <link rel="stylesheet" href="/css_cadastro/lado_esquerdo.css">
+  <link rel="stylesheet" href="/css_cadastro/imagens.css">
+
+
+</head>
+<body>
+  <div class="tela">
+    <div class="conteudo">
+      <!-- Lado esquerdo -->
+      <div class="painel-esquerdo">
+        <img src="/imagens_cadastro/Project.png" alt="Logo Projack Impulse" class="logo"/>
+        <img src="/imagens_cadastro/esquilo astronauta.png" alt="Esquilo Astronauta" class="esquilo"/>
+        <p class="descricao">
+          Você nasceu para<br/>
+          explorar novos mundos.<br/>
+          Comece agora!<br/>
+          <br/>
+          Cadastre-se e lidere sua<br/>
+          jornada entre projetos.
+        </p>
+        <img src="/imagens_cadastro/foguete.png" alt="Foguete" class="foguete"/>
+      </div>
+
+      <!-- Lado direito -->
+      <div class="painel-direito">
+        <h1>Cadastre-se</h1>
+        <form>
+          <div class="campo">
+            <img src="/imagens_cadastro/pessoa.png" alt="Ícone Nome" class="icone" />
+            <input type="text" placeholder="Nome" name="nome" required />
+          </div>
+          <div class="campo">
+            <img src="/imagens_cadastro/telefone.png" alt="Ícone Telefone" class="icone" />
+            <input type="tel" placeholder="Telefone" name="telefone" required />
+          </div>
+          <div class="campo">
+            <img src="/imagens_cadastro/envelope.png" alt="Ícone E-mail" class="icone" />
+            <input type="email" placeholder="E-mail" name="email" required />
+          </div>
+          <div class="campo">
+            <img src="/imagens_cadastro/cadeado.png" alt="Ícone Senha" class="icone" />
+            <input type="password" placeholder="Senha" name="senha" required />
+            <span class="toggle-senha">👁️</span> <!-- ícone de olho -->
+          </div>
+
+
+          <div class="grupo-radio">
+            <label>
+              <input type="radio" name="perfil" value="idealizador" checked />
+              Idealizador
+            </label>
+            <label>
+              <input type="radio" name="perfil" value="colaborador" />
+              Colaborador
+            </label>
+          </div>
+
+          <button type="submit">Criar</button>
+        </form>
+      </div>
+    </div>
+    
+        
+
+
+    <!-- Brilhos -->
+    <img src="/imagens_cadastro/estrela.png" alt="estrela1" class="estrela1" />
+    <img src="/imagens_cadastro/estrela.png" alt="estrela2" class="estrela2" />
+    <img src="/imagens_cadastro/estrela.png" alt="estrela3" class="estrela3" />
+  </div>
+    <script>
+      document.querySelectorAll('.campo').forEach(campo => {
+    const toggle = campo.querySelector('.toggle-senha');
+    const input = campo.querySelector('input[type="password"]');
+
+    // só adiciona o evento se o campo tiver o ícone de toggle
+    if (toggle && input) {
+      toggle.addEventListener('click', () => {
+        if (input.type === 'password') {
+          input.type = 'text';
+          toggle.textContent = '🙈';
+        } else {
+          input.type = 'password';
+          toggle.textContent = '👁️';
+        }
+      });
+    }
+  });
+    </script>
+</body>
+</html>
