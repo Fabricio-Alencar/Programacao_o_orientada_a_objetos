@@ -35,9 +35,9 @@ Durante o aprendizado, estudei e apliquei os seguintes padrões de projeto:
 
 Ao usar Programação Orientada a Objetos, percebi diversos benefícios como:
 
-- Melhor organização do código  
-- Facilidade na manutenção e extensão dos sistemas  
-- Reutilização de código  
-- Clareza no design e estrutura do programa  
-- Flexibilidade para modificar comportamentos sem impactar todo o sistema  
-- Facilita o trabalho em equipe  
+- Melhor organização do código;
+- Facilidade na manutenção e extensão dos sistemas;  
+- Reutilização de código;  
+- Clareza no design e estrutura do programa;  
+- Flexibilidade para modificar comportamentos sem impactar todo o sistema;  
+- Facilita o trabalho em equipe.  
