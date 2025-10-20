@@ -1,0 +1,200 @@
+/* =======================
+   PAINEL DIREITO (formulário)
+   ======================= */
+.painel-direito {
+  width: 65%;                     /* Ocupa 65% da largura do conteúdo principal */
+  background-color: #ffffff;      /* Fundo branco do painel direito */
+  border-radius: 0 2rem 2rem 0;   /* Arredonda apenas os cantos do lado direito */
+  
+  display: flex;                  /* Ativa flexbox para organizar elementos internos */
+  flex-direction: column;         /* Organiza os elementos em coluna */
+  justify-content: center;        /* Centraliza verticalmente */
+  align-items: center;            /* Centraliza horizontalmente */
+  text-align: center;             /* Centraliza textos dentro do painel */
+  position: relative;             /* Necessário para posicionamento interno de campos e botões */
+  padding: 2rem;                  /* Espaçamento interno geral do painel */
+}
+
+/* =======================
+   ESTRELAS SOBREPOSTAS
+   ======================= */
+.imagem-sobreposta {
+  position: absolute;    /* Posicionamento absoluto dentro do painel */
+  top: 0;                /* No topo */
+  right: 0rem;              /* No canto direito */
+  width: 12rem;          /* Ajuste a largura conforme necessário */
+  height: auto;          /* Mantém proporção da imagem */
+  z-index: 20;           /* Sobrepõe os demais elementos do painel */
+  transform: translate(25%, -25%); /* Opcional: desloca um pouco para fora do painel */
+}
+
+/* =======================
+   Título do formulário
+   ======================= */
+.painel-direito h1 {
+  font-family: 'Poetsen One', cursive; /* Fonte decorativa principal do título */
+  font-weight: 500;                     /* Peso médio da fonte */
+  font-size: 4rem;                      /* Tamanho grande do título */
+  line-height: 1.2em;                   /* Altura da linha proporcional ao tamanho do texto */
+  color: #23433E;                       /* Cor do texto do título */
+  margin-bottom: 1rem;                  /* Espaço abaixo do título */
+}
+
+/* =======================
+   Formulário e Campos
+   ======================= */
+.form-campos {
+  display: flex;                        /* Flexbox para organizar os campos do formulário */
+  flex-direction: column;               /* Campos organizados em coluna */
+  gap: 3rem;                            /* Espaçamento entre cada campo */
+  width: 55rem;                          /* Largura do formulário */
+  padding: 1.5rem;                      /* Espaçamento interno do formulário */
+  border-radius: 1rem;                  /* Cantos arredondados do formulário */
+  margin: 0 auto;                        /* Centraliza o formulário horizontalmente */
+}
+
+/* =======================
+   Campos de entrada
+   ======================= */
+.campo {
+  width: 100%;                           /* Ocupa toda a largura do form-campos */
+  height: 4rem;                          /* Altura do campo */
+  background: #B7D2BD;                   /* Cor de fundo do campo */
+  box-shadow: 0 0.25rem 0.625rem rgba(0,0,0,0.25); /* Sombra para profundidade */
+  border-radius: 0.625rem;               /* Cantos arredondados */
+  display: flex;                         /* Flexbox para alinhar ícone e input */
+  align-items: center;                   /* Centraliza verticalmente o conteúdo */
+  padding-left: 4.5rem;                  /* Espaço à esquerda para o ícone */
+  position: relative;                    /* Para posicionar ícone e toggle */
+}
+
+/* =======================
+   Ícones dentro dos campos
+   ======================= */
+.campo .icone {
+  position: absolute;                    /* Posiciona o ícone dentro do campo */
+  left: 1rem;                             /* Distância da borda esquerda do campo */
+  width: 2.5rem;                          /* Largura do ícone */
+  height: 2.5rem;                         /* Altura do ícone */
+}
+
+/* =======================
+   Inputs
+   ======================= */
+.campo input {
+  flex: 1;                                /* Ocupa todo o espaço restante do campo */
+  border: none;                            /* Remove borda padrão do input */
+  background: transparent;                 /* Fundo transparente */
+  font-size: 1.5rem;                       /* Tamanho da fonte do input */
+  color: #003223;                          /* Cor do texto */
+  outline: none;                           /* Remove contorno ao focar */
+  font-family: 'Quantico', sans-serif;    /* Fonte principal do input */
+}
+
+/* Placeholder do input */
+.campo input::placeholder {
+  color: #003223;                          /* Cor do placeholder */
+  opacity: 0.8;                            /* Leve transparência */
+}
+
+/* Autofill Chrome, Edge e Safari */
+.campo input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #B7D2BD inset; /* Mantém fundo do input ao ser autofill */
+  -webkit-text-fill-color: #003223;               /* Cor do texto ao ser autofill */
+  font-family: 'Quantico', sans-serif;           /* Fonte do input */
+}
+
+/* Autofill Firefox */
+.campo input:-moz-autofill {
+  box-shadow: 0 0 0 1000px #B7D2BD inset;       /* Mantém fundo do input ao ser autofill */
+  -moz-text-fill-color: #003223;                /* Cor do texto ao ser autofill */
+  font-family: 'Quantico', sans-serif;          /* Fonte do input */
+}
+
+/* =======================
+   Toggle senha (olho)
+   ======================= */
+.campo .toggle-senha {
+  position: absolute;       /* Posicionamento dentro do campo */
+  right: 1rem;              /* Distância da borda direita */
+  cursor: pointer;          /* Cursor de mão para indicar clique */
+  font-size: 1.2rem;        /* Tamanho do ícone de toggle */
+  user-select: none;        /* Evita seleção acidental do ícone */
+}
+
+/* =======================
+   Grupo de Radio Buttons
+   ======================= */
+.grupo-radio {
+  display: flex;            /* Flex horizontal */
+  justify-content: center;  /* Centraliza os radio buttons */
+  gap: 10rem;                /* Espaçamento entre os radios */
+  font-family: 'Quantico', sans-serif; 
+  font-size: 2rem;        /* Tamanho da fonte dos labels */
+  color: #000000;           /* Cor do texto */
+  margin-top: 1rem;         /* Espaço acima do grupo de radios */
+}
+
+.grupo-radio input {
+  margin-right: 0.5rem;     /* Espaço entre radio e label */
+  accent-color: #003221;    /* Cor do radio */
+  width: 1.5rem;            /* Largura do radio */
+  height: 1.5rem;           /* Altura do radio */
+  cursor: pointer;
+}
+
+.grupo-radio label {
+  display: flex;            /* Flex para alinhar radio e texto */
+  align-items: center;      /* Alinha verticalmente */
+  cursor: pointer;          /* Cursor de mão */
+}
+
+/* =======================
+   Botão de envio
+   ======================= */
+button[type="submit"] {
+  width: 20%;                     /* Largura proporcional ao painel */
+  max-width: 20rem;               /* Limite máximo do botão */
+  padding: 0.7rem 0;                /* Altura do botão */
+  margin-top: 2rem;               /* Espaço acima do botão */
+  background: #003221;            /* Cor de fundo do botão */
+  box-shadow: 0 0.25rem 0.625rem rgba(0,0,0,0.25); /* Sombra */
+  border-radius: 2rem;            /* Cantos arredondados */
+  border: none;                   /* Sem borda */
+  color: #ffffff;                 /* Cor do texto */
+  font-family: 'Quantico', sans-serif;
+  font-size: 1.75rem;             /* Tamanho da fonte */
+  cursor: pointer;                /* Cursor de mão */
+  transition: 0.3s;               /* Transição suave para hover */
+}
+
+button[type="submit"]:hover {
+  background: #004d30;            /* Cor do botão ao passar o mouse */
+}
+
+/* =======================
+   RESPONSIVIDADE
+   ======================= */
+@media (max-width: 900px) {
+  .painel-direito {
+    width: 100%;         /* Painel ocupa toda a largura em telas menores */
+    padding: 2rem;       /* Reduz padding */
+  }
+
+  .form-campos {
+    max-width: 90%;      /* Campos ocupam mais espaço em telas pequenas */
+  }
+
+  .campo {
+    width: 100%;         /* Campos ocupam toda a largura do form */
+  }
+
+  .grupo-radio {
+    gap: 2rem;           /* Espaçamento reduzido entre radios */
+    flex-direction: column; /* Radios empilhados verticalmente */
+  }
+
+  button[type="submit"] {
+    width: 70%;          /* Botão maior em telas menores */
+  }
+}

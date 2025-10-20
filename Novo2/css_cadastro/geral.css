@@ -1,0 +1,57 @@
+/* =======================
+   RESET BÁSICO
+   ======================= */
+
+/* Remove margens e preenchimentos padrão de todos os elementos
+   e garante que o tamanho do padding e bordas não aumentem a largura/altura */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =======================
+   ESTILO GLOBAL DO BODY E HTML
+   ======================= */
+
+/* Garante que o body e html ocupem toda a tela, 
+   define a fonte padrão e centraliza todo o conteúdo com flexbox */
+body, html {
+  width: 100%;
+  height: 100%;
+  font-family: 'Quantico', sans-serif; /* Fonte principal da página */
+  background-color: #003221;           /* Fundo verde escuro */
+  display: flex;                        /* Ativa flexbox para centralização */
+  justify-content: center;              /* Centraliza horizontalmente */
+  align-items: center;                  /* Centraliza verticalmente */
+}
+
+/* =======================
+   TELA PRINCIPAL (.tela)
+   ======================= */
+
+/* Container principal que envolve todo o conteúdo da aplicação */
+.tela {
+  width: 90vw;               /* 90% da largura da viewport */
+  height: 90vh;              /* 90% da altura da viewport */
+  background-color: #003221; /* Fundo reforçado */
+  border-radius: 2rem;       /* Bordas arredondadas da tela */
+  position: relative;        /* Necessário para posicionar elementos filhos com absolute */
+  display: flex;             /* Flexbox para centralizar o conteúdo interno */
+  justify-content: center;   /* Centraliza horizontalmente */
+  align-items: center;       /* Centraliza verticalmente */
+}
+
+/* =======================
+   CONTEÚDO CENTRAL (.conteudo)
+   ======================= */
+
+/* Container interno que agrupa os painéis (esquerdo e direito) */
+.conteudo {
+  width: 90%;                      /* Ocupa 90% da largura da tela */
+  height: 90%;                     /* Ocupa 90% da altura da tela */
+  background-color: #64997F;       /* Fundo interno dos painéis */
+  border-radius: 1.5rem;           /* Bordas arredondadas do conteúdo interno */
+  display: flex;                    /* Flexbox para organizar painéis lado a lado */
+  box-shadow: 0 0 5vh 5vh rgba(0,0,0,0.25); /* Sombra difusa ao redor do conteúdo */
+}

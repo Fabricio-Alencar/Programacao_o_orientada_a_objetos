@@ -1,0 +1,83 @@
+/* =======================
+   PAINEL ESQUERDO
+   ======================= */
+.painel-esquerdo {
+
+  width: 35%;                     /* Ocupa 35% do conteúdo total */
+  
+  height: 100%;                   /* Ocupa toda altura do conteúdo */
+  display: flex;
+  flex-direction: column;         /* Organiza itens verticalmente */
+  justify-content: space-between; /* Espaço entre logo, texto e botão */
+  align-items: center;            /* Centraliza horizontalmente */
+  
+  padding: 2rem;                  /* Espaçamento interno */
+  color: #fff;                    /* Texto branco */
+}
+
+
+/* =======================
+   LOGO
+   ======================= */
+.painel-esquerdo .logo {
+  width: 40rem;           /* Mantém proporcional à largura do painel */
+  height: auto;
+  margin-top: -2.5rem;    /* Move um pouco para cima */
+  margin-left: -7rem;   /* Move um pouco para a esquerda */
+  object-fit: contain;  /* Mantém proporção da imagem */
+}
+
+
+/* =======================
+   TEXTO DO PAINEL
+   ======================= */
+.painel-esquerdo-texto {
+  text-align: center;               /* Centraliza o texto */
+  font-family: 'Quantico', sans-serif;
+  font-size: 2.5rem;                /* Tamanho relativo */
+  line-height: 3rem;              /* Espaçamento entre linhas */
+  margin-top: -12rem;                 /* Espaçamento entre parágrafos */
+
+}
+
+.painel-esquerdo-texto p + p {
+  margin-top: 1rem;                 /* Espaçamento entre parágrafos */
+}
+
+/* =======================
+   BOTÃO VOLTAR
+   ======================= */
+.botao-voltar {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #fff;           /* Borda branca */
+  background: transparent;           /* Sem cor de fundo */
+  color: #fff;                       /* Texto branco */
+  border-radius: 0.5rem;
+  font-family: 'Quantico', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.botao-voltar:hover {
+  background-color: #fff;            /* Fundo branco ao passar o mouse */
+  color: #004d33;                    /* Texto verde escuro */
+}
+
+
+
+/* =======================
+   FOGUETE
+   ======================= */
+
+/* Foguete no canto inferior esquerdo */
+.painel-esquerdo .foguete {
+  position: absolute;
+  bottom: -4rem;                /* Encostado na base do painel */
+  left: -2.5rem;                  /* Encostado na esquerda do painel */
+  width: 20rem;              /* Tamanho */
+  height: auto;             /* Mantém proporção */
+  z-index: 10;              /* Fica sobreposto ao conteúdo */
+  transform: rotate(-25deg); /* Rotaciona 20 graus no sentido anti-horário */
+
+}
